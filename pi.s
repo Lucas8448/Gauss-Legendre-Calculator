@@ -2,6 +2,11 @@
     .globl _main
     .p2align 2
 _main:
+    LDR     D0, =const_one
+    FSQRT   D1, D1
+    FDIV    D1, D0, D1
+    LDR     D2, =const_quarter
+    LDR     D3, =const_one
     MOV     W0, #0
     RET
 
