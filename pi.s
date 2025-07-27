@@ -2,15 +2,19 @@
     .globl _main
     .p2align 2
 _main:
-    LDR     D0, =const_one
-    LDR     D1, =const_two
+    SUB     SP, SP, #16
+    STP     X29, X30, [SP]
+    MOV     X29, SP
+    
+    FMOV    D0, #1.0
+    FMOV    D1, #2.0
     FSQRT   D1, D1
     FDIV    D1, D0, D1
-    LDR     D2, =const_quarter
-    LDR     D3, =const_one
+    FMOV    D2, #0.25
+    FMOV    D3, #1.0
 
     FADD    D4, D0, D1
-    LDR     D5, =const_two
+    FMOV    D5, #2.0
     FDIV    D4, D4, D5
     FMUL    D5, D0, D1
     FSQRT   D5, D5
@@ -18,31 +22,24 @@ _main:
     FMUL    D6, D6, D6
     FMUL    D6, D6, D3
     FSUB    D2, D2, D6
-    FMUL    D3, D3, D5
 
     FADD    D7, D4, D5
     FMUL    D7, D7, D7
-    LDR     D8, =const_four
+    FMOV    D8, #4.0
     FMUL    D8, D8, D2
     FDIV    D7, D7, D8
 
+    MOV     X8, SP
+    STR     D7, [X8]
     ADRP    X0, fmt@PAGE
     ADD     X0, X0, fmt@PAGEOFF
-    FMOV    D0, D7
     BL      _printf
 
+    LDP     X29, X30, [SP]
+    ADD     SP, SP, #16
     MOV     W0, #0
     RET
 
     .section __DATA,__data
 fmt:
     .asciz "pi = %.12f\n"
-
-const_one:
-    .double 1.0
-const_two:
-    .double 2.0
-const_quarter:
-    .double 0.25
-const_four:
-    .double 4.0
