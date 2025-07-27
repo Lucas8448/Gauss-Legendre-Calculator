@@ -28,7 +28,7 @@ _main:
 
     ADRP    X0, fmt@PAGE
     ADD     X0, X0, fmt@PAGEOFF
-    FMOV    V0, D7
+    FMOV    D0, D7
     BL      _printf
 
     MOV     W0, #0
